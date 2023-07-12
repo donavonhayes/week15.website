@@ -30,4 +30,4 @@ class PlaylistApi {
     }
 }
 
-export const playlistsApi = new PlaylistApi();
+export const PlaylistsApi = new PlaylistApi();
