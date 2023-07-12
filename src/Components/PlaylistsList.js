@@ -11,10 +11,7 @@ export class PlaylistsList extends React.Component {
         this.fetchPlaylists();
     }
 
-    fetchPlaylists = async () => {
-        const playlists = await PlaylistsApi.get();
-        this.setState({ playlists });
-    };
+    
 
 
 
