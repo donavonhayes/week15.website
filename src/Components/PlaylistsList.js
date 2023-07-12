@@ -12,12 +12,12 @@ export class PlaylistsList extends React.Component {
     }
 
     fetchPlaylists = async () => {
-        const playlists = await playlistsApi.get();
+        const playlists = await PlaylistsApi.get();
         this.setState({ playlists });
     };
 
     updatePlaylist = async (updatedPlaylist) => {
-        await playlistsApi.put(updatedPlaylist);
+        await PlaylistsApi.put(updatedPlaylist);
         this.fetchPlaylists();
     };
 
