@@ -1,6 +1,6 @@
 import React from "react";
 import { PlayList } from './Playlist'
-import { playlistsApi } from './rest/PlaylistsApi';
+import { playlistsApi } from './PlaylistsApi';
 
 export class PlaylistsList extends React.Component {
     state = {
