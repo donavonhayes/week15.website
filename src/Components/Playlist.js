@@ -1,5 +1,5 @@
 import React from "react";
-import { NewSongForm } from 'NewSongForm';
+import { NewSongForm } from './NewSongForm';
 
 export const PlayList = (props) => {
     const { playlist, updatePlaylist } = props;
