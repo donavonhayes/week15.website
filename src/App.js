@@ -1,8 +1,8 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Create from "./components/create/Create";
-import Read from "./components/read/Read";
-import Update from "./components/update/Update";
+import Create from "./components/create/create";
+import Read from "./components/read/read";
+import Update from "./components/update/update";
 
 function App() {
   return (
