@@ -16,10 +16,7 @@ export class PlaylistsList extends React.Component {
         this.setState({ playlists });
     };
 
-    updatePlaylist = async (updatedPlaylist) => {
-        await PlaylistsApi.put(updatedPlaylist);
-        this.fetchPlaylists();
-    };
+
 
     render() {
         return (
