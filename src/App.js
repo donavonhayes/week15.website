@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="main">
       <Routes>
-        <Route path="/" element={<Create />} className="datagrid"/>
+        <Route path="/create" element={<Create />} className="datagrid"/>
         <Route path="read" exact element={<Read />} className="datagrid"/>
         <Route path="update" exact element={<Update />} className="datagrid"/>
       </Routes>
