@@ -1,91 +1,119 @@
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Button from "@mui/material/Button";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// ! https://www.npmjs.com/package/react-checkbox-group
+import React, { useState, useEffect } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
 
-const Update = () => {
-  let navigate = useNavigate();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [ID, setID] = useState(null);
+export default function Update() {
+    const [ firstName, setFirstName ] = useState('');
+    const [ lastName, setLastName ] = useState('');
+    const [ checkbox, setCheckbox ] = useState(false);
+    
+    const [ id, setID ] = useState(null);
 
-  const handleFNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-  const handleLNameChange = (e) => {
-    setLastName(e.target.value);
-  };
-  // Sending updated data with METHOD put to the Mock API
-  const sendDataToAPI = () => {
-    axios
-      .put(`https://6325d71d4cd1a2834c458ea8.mockapi.io/CrudApp/${ID}`, {
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        setID(localStorage.getItem('ID'))
+        setFirstName(localStorage.getItem('First Name'));
+        setLastName(localStorage.getItem('Last Name'));
+        setCheckbox(localStorage.getItem('Checkbox Value'))
+    }, []);
+
+    let formData = {
         firstName,
         lastName,
-      })
-      .then(() => {
-        navigate("/read");
-      });
-  };
-  // Updating item in the localStorage by grabing its unique ID
-  useEffect(() => {
-    setFirstName(localStorage.getItem("firstName"));
-    setLastName(localStorage.getItem("lastName"));
-    setID(localStorage.getItem("ID"));
-  }, [setFirstName, setLastName, setID]);
+        checkbox,
+        id
+    }
 
-  return (
-    <div className="update">
-      <h3> Update User</h3>
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <FormControl variant="standard">
-          <InputLabel className="inputLabel" htmlFor="firstName">
-            First Name
-          </InputLabel>
-          <Input
-            className="input"
-            name="fName"
-            id="firstName"
-            value={firstName}
-            placeholder="First Name"
-            onChange={handleFNameChange}
-            startAdornment={
-              <InputAdornment position="start">
-                <AccountCircle className="icon" />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-      </Box>
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <FormControl variant="standard">
-          <InputLabel className="inputLabel" htmlFor="firstName">
-            Last Name
-          </InputLabel>
-          <Input
-            name="lName"
-            id="lastName"
-            value={lastName}
-            placeholder="Last Name"
-            onChange={handleLNameChange}
-            startAdornment={
-              <InputAdornment position="start">
-                <AccountCircle className="icon" />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-      </Box>
-      <Button onClick={sendDataToAPI} variant="outlined" size="small">
-        Update
-      </Button>
-    </div>
-  );
-};
+    console.log('formData:', formData);
 
-export default Update;
+    //Update request
+    const updateAPIData = async (data) => {
+        console.log('data:', data)
+        try {
+            const resp = await fetch(`https://631cbcad1b470e0e120961c6.mockapi.io/PromineoTechApi/fakeData/${data.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            navigate('/read');
+            console.log('resp:', resp)
+            return await resp.json();
+        } catch (err) {
+            console.log(
+                "Oh no! There was an error with updating your review.",
+                err
+            );
+        }
+    };
+
+    const handleChange = event => {
+        if (event.target.checked) {
+            console.log('✅ Checkbox is checked');
+        } else {
+            console.log('⛔️ Checkbox is NOT checked');
+        }
+        setCheckbox(current => !current);
+    };
+
+    const stringToBooleanCheck = (check) => {
+        if(check === 'true') {
+            return true;
+        } else if (check === 'false') {
+            return false;
+        }
+    }
+
+    return (
+        <>
+            <Form className='create-form'>
+                <Form.Group className="mb-3" controlId="firstName">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="firstName" placeholder="First Name" value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)} />
+                    <Form.Text className="text-muted">
+                        We'll never share your data.
+                    </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="lastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="lastName" placeholder="Last Name" value={lastName}
+                        onChange={(e) => setLastName(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="checkbox">
+                    <Form.Check type="checkbox"
+                        value="checkbox"
+                        id="checkbox"
+                        name="checkbox"
+                        defaultChecked={() => stringToBooleanCheck(checkbox)}
+                        // checked={stringToBooleanCheck(checkbox)}
+                        label="I agree to the Terms and Conditions"
+                        onChange={(setCheckbox) => handleChange(setCheckbox)}>
+                    </Form.Check>
+                </Form.Group>
+                {/* added {postData} function to run every time submit is clicked */}
+                <Button onClick={() => updateAPIData(formData)} variant="success" type="button">
+                    Update
+                </Button>
+            </Form>
+        </>
+    );
+}
+
+
+// const updateAPIData = async (event) => {
+    //     console.log('event:', event);
+    //     try {
+    //         const resp = await axios.put(`https://631cbcad1b470e0e120961c6.mockapi.io/PromineoTechApi/fakeData/${event.id}`)
+    //         console.log(resp.data);
+    //         return await resp.json();
+    //     } catch (err) {
+    //         console.log('Oops, looks like updateAPIData had an issue.', err);
+    //     }
+    //     console.log('updateAPIData:', updateAPIData());
+    // }

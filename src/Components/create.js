@@ -1,80 +1,64 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Button from "@mui/material/Button";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
-const Create = () => {
-  let navigate = useNavigate();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+export default function Create() {
+    // initializing states
+    const[ firstName, setFirstName ] = useState('');
+    const[ lastName, setLastName ] = useState('');
+    const[ checkbox, setCheckbox ] = useState(false);
+    // const navigate = useNavigate();
 
-  const handleFNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-  const handleLNameChange = (e) => {
-    setLastName(e.target.value);
-  };
 
-  const sendDataToAPI = () => {
-    axios
-      .post(`https://6325d71d4cd1a2834c458ea8.mockapi.io/CrudApp`, {
-        firstName,
-        lastName,
-      })
-      .then(() => {
-        navigate("/read");
-      });
-  };
+    let navigate = useNavigate();
+    // we'll use this function to send data to the API
+    const postData = (event) => {
+        console.log(event)
+        console.log(`Post data ran on submit button`);
+        axios.post(`https://631cbcad1b470e0e120961c6.mockapi.io/PromineoTechApi/fakeData`, {
+            firstName,
+            lastName,
+            checkbox,
+        })        
+        console.log(firstName, lastName, checkbox);
+        navigate('/read')
+        // navigate('/read');
+    }
 
-  return (
-    <div className="createMenu">
-      <h3> Crud Operations</h3>
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-      <div className="create-menu-items">
-        <FormControl variant="standard">
-          <InputLabel htmlFor="firstName">First Name</InputLabel>
-          <Input
-            name="fName"
-            id="firstName"
-            placeholder="First Name"
-            onChange={handleFNameChange}
-            startAdornment={
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-        {/* </Box> */}
-        {/* <Box sx={{ "& > :not(style)": { m: 1 } }}> */}
-        <FormControl variant="standard">
-          <InputLabel htmlFor="firstName">Last Name</InputLabel>
-          <Input
-            name="lName"
-            id="lastName"
-            placeholder="Last Name"
-            onChange={handleLNameChange}
-            startAdornment={
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+    function handleSubmit(e) {
+        e.preventDefault();
+        console.log('you clicked submit')
+    }
 
-      </div>
-      </Box>
-      <Button onClick={sendDataToAPI} variant="outlined" size="small">
-        Submit
-      </Button>
-    </div>
-  );
-};
+    return(
+        <>
+            <Form onSubmit={handleSubmit} className='create-form'>
+                <Form.Group className="mb-3" controlId="firstName">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="firstName" placeholder="First Name"
+                        onChange={(e) => setFirstName(e.target.value)} />
+                    <Form.Text className="text-muted">
+                        We'll never share your data.
+                    </Form.Text>
+                </Form.Group>
 
-export default Create;
+                <Form.Group className="mb-3" controlId="lastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="lastName" placeholder="Last Name" 
+                        onChange={(e) => setLastName(e.target.value)}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="checkbox">
+                    <Form.Check type="checkbox" 
+                        label="I agree to the Terms and Conditions" 
+                            onChange={(e) => setCheckbox(!checkbox)}/>
+                </Form.Group>
+                {/* added {postData} function to run every time submit is clicked */}
+                <Button onClick={postData} variant="primary" type="button">
+                    Submit
+                </Button>
+            </Form>
+        </>
+    );
+}

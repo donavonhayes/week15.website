@@ -1,19 +1,20 @@
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import Create from "./components/Create/Create";
-import Read from "./components/Read/Read";
-import Update from "./components/Update/Update";
+import './App.css'
+import Create from './components/create'
+import Read from './components/read'
+import Update from './omponents/update'
+import { Route, Routes } from 'react-router-dom'
+import NavBar from './components/navbar'
 
-function App() {
+export default function App() {
   return (
-    <div className="main">
+    <div className="main container col-8">
+      <NavBar />
+      <h2 className="main-header">React Crud Operations App</h2>
       <Routes>
-        <Route path="/" element={<Create />} className="datagrid"/>
-        <Route path="read" exact element={<Read />} className="datagrid"/>
-        <Route path="update" exact element={<Update />} className="datagrid"/>
+        <Route path="/" element={<Create />} />
+        <Route path="/read" element={<Read />} />
+        <Route path="/update" element={<Update />} />
       </Routes>
     </div>
-  );
+  )
 }
-
-export default App;
