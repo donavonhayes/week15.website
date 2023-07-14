@@ -1,9 +1,9 @@
 import './App.css'
-import Create from './create'
-import Read from './read'
-import Update from './update'
+import Create from './Create'
+import Read from './Read'
+import Update from './Update'
 import { Route, Routes } from 'react-router-dom'
-import NavBar from './navbar'
+import NavBar from './Navbar'
 
 export default function App() {
   return (
