@@ -2,6 +2,7 @@ import './App.css'
 import Create from './create'
 import Read from './read'
 import Update from './update'
+import logo from './logo.svg';
 import { Route, Routes } from 'react-router-dom'
 import NavBar from './navbar'
 
